@@ -1,19 +1,19 @@
 {
-  "compilerOptions": {
-    "target": "ES6",
-    "module": "ESNext",
-    "moduleResolution": "node", // Use "node" to resolve modules
-    "esModuleInterop": true, // Enable esModuleInterop
-    "resolveJsonModule": true, // Allow importing JSON files
-    "strict": true, // Enable strict type checking
-    "skipLibCheck": true,
-    "outDir": "./dist", // Compile files to the "dist" folder
-    "rootDir": "./src", // Your source files are in the "src" folder
-    "baseUrl": ".", // Ensure root module resolution
-    "paths": {
-      "*": ["node_modules/*"] // Resolve modules from node_modules
-    }
-  },
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules"]
+    "compilerOptions": {
+        "target": "ES6",
+        "module": "ESNext",
+        "moduleResolution": "node", // Use "node" to resolve modules
+        "esModuleInterop": true, // Enable esModuleInterop
+        "resolveJsonModule": true, // Allow importing JSON files
+        "strict": true, // Enable strict type checking
+        "skipLibCheck": true,
+        "outDir": "./dist", // Compile files to the "dist" folder
+        "rootDir": "./src", // Your source files are in the "src" folder
+        "baseUrl": ".", // Ensure root module resolution
+        "paths": {
+            "*": ["node_modules/*"] // Resolve modules from node_modules
+        }
+    },
+    "include": ["src/**/*.ts"],
+    "exclude": ["node_modules"]
 }
