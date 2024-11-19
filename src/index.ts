@@ -21,7 +21,7 @@ app.use(express.json());
 
 // Defining Endpoints and Routes
 app.get("/", (req: Request, res: Response) => {
-    res.send("Hello World");
+    res.json("Hello World!");
     res.status(200);
 });
 
