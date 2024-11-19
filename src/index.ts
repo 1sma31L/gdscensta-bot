@@ -2,7 +2,6 @@ import express, { Request, Response } from "express";
 
 import cors from "cors";
 import dotenv from "dotenv";
-import { fileURLToPath } from "url";
 import fs from "fs";
 import morgan from "morgan";
 import path from "path";
@@ -32,6 +31,7 @@ const accessLogStream = fs.createWriteStream(
 );
 // setup the logger
 app.use(morgan("common", { stream: accessLogStream }));
+app.use(morgan("dev"));
 
 // Defining Endpoints and Routes
 app.get("/", (req: Request, res: Response) => {
