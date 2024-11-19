@@ -23,12 +23,13 @@ app.use(cors());
 app.use(express.json());
 
 // create a write stream (in append mode)
-const accessLogStream = fs.createWriteStream(
+const accessLogStream: fs.WriteStream = fs.createWriteStream(
     path.join(process.cwd(), "logs", "access.log"),
     {
         flags: "a",
     },
 );
+
 // setup the logger
 app.use(morgan("common", { stream: accessLogStream }));
 app.use(morgan("dev"));
