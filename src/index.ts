@@ -1,14 +1,18 @@
-import cors from 'cors';
-import express from 'express';
-const app = express();
-const PORT = 8080;
+import express, { Request, Response } from "express";
 
-// Middlewares
+import cors from "cors";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const app = express();
+const PORT = process.env.PORT || "3000";
+
 app.use(cors());
 app.use(express.json());
 
-app.get('/', (req, res) => {
-    res.send('Hello World');
+app.get("/", (req: Request, res: Response) => {
+    res.send("Hello World");
     res.status(200);
 });
 
