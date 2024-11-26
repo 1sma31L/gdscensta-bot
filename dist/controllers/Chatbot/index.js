@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import dotenv from "dotenv";
 dotenv.config();
 const getChatCompletion = (text) => __awaiter(void 0, void 0, void 0, function* () {
-    const url = "https://api.x.ai/v1/chat/completions";
+    const url = "https://api.x.ai/v1/completions";
     const apiKey = process.env.GROK_API_KEY;
     const payload = {
         messages: [

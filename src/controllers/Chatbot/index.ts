@@ -1,9 +1,45 @@
 import dotenv from "dotenv";
 dotenv.config();
-const getChatCompletion = async (text: string): Promise<string> => {
-    const url = "https://api.x.ai/v1/chat/completions";
-    const apiKey = process.env.GROK_API_KEY;
 
+export type GROK_RESPONSE = {
+    id: string;
+    object: string;
+    created: number;
+    model: string;
+    choices: Choice[];
+    usage: Usage;
+    system_fingerprint: string;
+};
+
+export type Choice = {
+    index: number;
+    message: Message;
+    finish_reason: string;
+};
+
+export type Message = {
+    role: string;
+    content: string;
+    refusal: null;
+};
+
+export type Usage = {
+    prompt_tokens: number;
+    completion_tokens: number;
+    total_tokens: number;
+    prompt_tokens_details: PromptTokensDetails;
+};
+
+export type PromptTokensDetails = {
+    text_tokens: number;
+    audio_tokens: number;
+    image_tokens: number;
+    cached_tokens: number;
+};
+
+const getChatCompletion = async (text: string): Promise<GROK_RESPONSE> => {
+    const url = "https://api.x.ai/v1/completions";
+    const apiKey = process.env.GROK_API_KEY;
     const payload = {
         messages: [
             {
