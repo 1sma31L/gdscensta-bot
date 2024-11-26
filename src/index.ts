@@ -16,7 +16,6 @@ bot.setWebHook(WEBHOOK_URL);
 bot.on("message", async (msg) => {
     const chatId = msg.chat.id;
     const text = msg.text;
-
     if (text === "/start") {
         bot.sendMessage(chatId, "Welcome to the bot! How can I assist you?");
         bot.getMyCommands();

@@ -1,6 +1,3 @@
-import dotenv from "dotenv";
-dotenv.config();
-
 export type GROK_RESPONSE = {
     id: string;
     object: string;
@@ -38,13 +35,14 @@ export type PromptTokensDetails = {
 };
 
 const getChatCompletion = async (text: string): Promise<GROK_RESPONSE> => {
-    const url = "https://api.x.ai/v1/completions";
+    const url = "https://api.x.ai/v1/chat/completions";
     const apiKey = process.env.GROK_API_KEY;
     const payload = {
         messages: [
             {
                 role: "system",
-                content: "You are a test assistant.",
+                content:
+                    "You are a telegram assistant of the club gdsc ensta national higher school of adnced technologies we have 5 dapertments web dev app dev cyber sec and ai and cultural.",
             },
             {
                 role: "user",
@@ -54,6 +52,7 @@ const getChatCompletion = async (text: string): Promise<GROK_RESPONSE> => {
         model: "grok-beta",
         stream: false,
         temperature: 0,
+        max_tokens: 60,
     };
 
     const headers = {
