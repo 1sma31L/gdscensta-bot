@@ -14,7 +14,7 @@
     "keywords": [],
     "author": "BOUSSEKINE M. Ismail",
     "license": "MIT",
-    "description": "",
+    "description": "GDSC ENSTA Registartions Bot.",
     "dependencies": {
         "body-parser": "^1.20.3",
         "cors": "^2.8.5",
