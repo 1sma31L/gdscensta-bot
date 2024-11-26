@@ -1,63 +1,39 @@
-import { Telegraf } from "telegraf";
-import dotenv from "dotenv";
+import express, { Request, Response } from "express";
 
+import dotenv from "dotenv";
+import fs from "fs";
+import morgan from "morgan";
+import path from "path";
+
+// Loading enviorement variables
 dotenv.config();
 
-// Choose a department
+// Initializing the server
+const app = express();
+const PORT = process.env.PORT || "3000";
 
-const departments = {
-    tech: ["Frontend Group", "Backend Group"],
-    design: ["UI/UX Group", "Graphic Design Group"],
-    marketing: ["Content Creation", "Social Media"],
-};
-
-type DepartmentKeys = keyof typeof departments;
-
-// Replace with your BotFather token
-const BOT_TOKEN = process.env.TELEGRAM_BOT_API!;
-
-// Create a bot instance
-const bot = new Telegraf(BOT_TOKEN);
-
-// Start command
-bot.start((ctx) =>
-    ctx.reply(
-        "Welcome! 🎉\nUse /choose to select a department or type anything to get started!",
-    ),
-);
-
-// Help command
-bot.help((ctx) =>
-    ctx.reply("Use /choose to pick a department or type a department name."),
-);
-
-bot.command("choose", (ctx) => {
-    const departmentList = Object.keys(departments)
-        .map((dept) => `- ${dept}`)
-        .join("\n");
-    ctx.reply(`Choose a department:\n${departmentList}`);
+// Starting the server
+app.listen(PORT, () => {
+    console.log(`Server is running : http://localhost:${PORT}`);
 });
 
-// Respond to department names
-bot.on("text", (ctx) => {
-    const text = ctx.message.text.toLowerCase();
-    if (text in departments) {
-        const group = departments[text as DepartmentKeys]; // Safe access
-        ctx.reply(
-            `Here are the groups for the ${text} department:\n${group.join("\n")}`,
-        );
-    } else {
-        ctx.reply(
-            "Department not found. Use /choose to see available departments.",
-        );
-    }
+// Using Middlewares
+app.use(express.json());
+
+// create a write stream (in append mode)
+const accessLogStream = fs.createWriteStream(
+    path.join(process.cwd(), "logs", "access.log"),
+    {
+        flags: "a",
+    },
+);
+// setup the logger
+app.use(morgan("common", { stream: accessLogStream }));
+
+// Defining Endpoints and Routes
+app.get("/", (req: Request, res: Response) => {
+    res.json("Hello World!");
+    res.status(200);
 });
 
-// Start the bot
-bot.launch()
-    .then(() => console.log("🤖 Bot is running!"))
-    .catch((err) => console.error("Error launching bot:", err));
-
-// Graceful shutdown
-process.once("SIGINT", () => bot.stop("SIGINT"));
-process.once("SIGTERM", () => bot.stop("SIGTERM"));
+export default app;
