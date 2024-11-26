@@ -30,12 +30,12 @@ app.use(morgan("common", { stream: accessLogStream }));
 app.use(morgan("dev"));
 
 // Defining Endpoints and Routes
-app.get("*", (req: Request, res: Response) => {
+app.get("/", (req: Request, res: Response) => {
     res.json("Hello World!");
     res.status(200);
 });
 
-app.post("*", (req: Request, res: Response) => {
+app.post("/", (req: Request, res: Response) => {
     res.json("Hello World!");
     res.status(200);
 });
