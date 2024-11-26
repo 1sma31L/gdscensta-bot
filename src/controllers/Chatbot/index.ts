@@ -1,6 +1,8 @@
+import dotenv from "dotenv";
+dotenv.config();
 const getChatCompletion = async (text: string): Promise<string> => {
     const url = "https://api.x.ai/v1/chat/completions";
-    const apiKey = process.env.GRKO_API_KEY;
+    const apiKey = process.env.GROK_API_KEY;
 
     const payload = {
         messages: [
