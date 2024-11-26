@@ -20,11 +20,11 @@ const accessLogStream = fs.createWriteStream(path.join(process.cwd(), "logs", "a
 app.use(morgan("common", { stream: accessLogStream }));
 app.use(morgan("dev"));
 // Defining Endpoints and Routes
-app.get("*", (req, res) => {
+app.get("/", (req, res) => {
     res.json("Hello World!");
     res.status(200);
 });
-app.post("*", (req, res) => {
+app.post("/", (req, res) => {
     res.json("Hello World!");
     res.status(200);
 });
