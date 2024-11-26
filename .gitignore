@@ -1,11 +1,4 @@
-# ENV
-.env*
-
-# Node
+*.env
 node_modules/
-
-# Dist
 dist/
-
-# Logs
 logs/

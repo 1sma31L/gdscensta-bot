@@ -16,10 +16,6 @@ app.post("/", (req, res) => {
     res.json("Hello World!");
     res.status(200);
 });
-app.get("/favicon.ico", (req, res) => {
-    res.json("N/A");
-    res.status(204);
-});
 // Starting the server
 app.listen(PORT, () => {
     console.log(`Server is running at PORT:${PORT}`);
