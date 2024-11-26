@@ -1,6 +1,5 @@
 import express, { Request, Response } from "express";
 
-import cors from "cors";
 import dotenv from "dotenv";
 import fs from "fs";
 import morgan from "morgan";
@@ -19,7 +18,6 @@ app.listen(PORT, () => {
 });
 
 // Using Middlewares
-app.use(cors());
 app.use(express.json());
 
 // create a write stream (in append mode)
