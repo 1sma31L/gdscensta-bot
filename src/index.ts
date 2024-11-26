@@ -7,7 +7,7 @@ dotenv.config();
 
 // Initializing the server
 const app = express();
-const PORT: string = process.env.PORT || "3000";
+const PORT = "3000";
 
 // Using Middlewares
 app.use(express.json());
@@ -21,6 +21,11 @@ app.get("/", (req: Request, res: Response) => {
 app.post("/", (req: Request, res: Response) => {
     res.json("Hello World!");
     res.status(200);
+});
+
+app.get("/favicon.ico", (req, res) => {
+    res.json("N/A");
+    res.status(204);
 });
 
 // Starting the server
