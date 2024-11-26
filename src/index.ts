@@ -35,6 +35,11 @@ app.get("*", (req: Request, res: Response) => {
     res.status(200);
 });
 
+app.post("*", (req: Request, res: Response) => {
+    res.json("Hello World!");
+    res.status(200);
+});
+
 // Starting the server
 app.listen(PORT, () => {
     console.log(`Server is running at : http://localhost:${PORT}`);
