@@ -13,11 +13,6 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || "3000";
 
-// Starting the server
-app.listen(PORT, () => {
-    console.log(`Server is running : http://localhost:${PORT}`);
-});
-
 // Using Middlewares
 app.use(cors());
 app.use(express.json());
@@ -35,9 +30,14 @@ app.use(morgan("common", { stream: accessLogStream }));
 app.use(morgan("dev"));
 
 // Defining Endpoints and Routes
-app.get("/", (req: Request, res: Response) => {
+app.get("*", (req: Request, res: Response) => {
     res.json("Hello World!");
     res.status(200);
+});
+
+// Starting the server
+app.listen(PORT, () => {
+    console.log(`Server is running at : http://localhost:${PORT}`);
 });
 
 export default app;
