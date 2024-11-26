@@ -1,39 +1,36 @@
 import express, { Request, Response } from "express";
 
 import dotenv from "dotenv";
-import fs from "fs";
-import morgan from "morgan";
-import path from "path";
 
 // Loading enviorement variables
 dotenv.config();
 
 // Initializing the server
 const app = express();
-const PORT = process.env.PORT || "3000";
-
-// Starting the server
-app.listen(PORT, () => {
-    console.log(`Server is running : http://localhost:${PORT}`);
-});
+const PORT = "3000";
 
 // Using Middlewares
 app.use(express.json());
-
-// create a write stream (in append mode)
-const accessLogStream = fs.createWriteStream(
-    path.join(process.cwd(), "logs", "access.log"),
-    {
-        flags: "a",
-    },
-);
-// setup the logger
-app.use(morgan("common", { stream: accessLogStream }));
 
 // Defining Endpoints and Routes
 app.get("/", (req: Request, res: Response) => {
     res.json("Hello World!");
     res.status(200);
+});
+
+app.post("/", (req: Request, res: Response) => {
+    res.json("Hello World!");
+    res.status(200);
+});
+
+app.get("/favicon.ico", (req, res) => {
+    res.json("Not");
+    res.status(204);
+});
+
+// Starting the server
+app.listen(PORT, () => {
+    console.log(`Server is running at PORT:${PORT}`);
 });
 
 export default app;
