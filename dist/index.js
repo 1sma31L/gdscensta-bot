@@ -11,7 +11,7 @@ import TelegramBot from "node-telegram-bot-api";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import express from "express";
-import { getChatCompletion } from "./controllers/Chatbot";
+// import { getChatCompletion } from "./controllers/Chatbot";
 dotenv.config();
 const BOT_TOKEN = process.env.TELEGRAM_BOT_API;
 const WEBHOOK_URL = "https://gdscensta-bot.vercel.app";
@@ -27,7 +27,7 @@ bot.on("message", (msg) => __awaiter(void 0, void 0, void 0, function* () {
         bot.getMyCommands();
     }
     else if (text) {
-        bot.sendMessage(chatId, yield getChatCompletion(text));
+        bot.sendMessage(chatId, "You said: " + text);
     }
 }));
 app.post("/", (req, res) => {
