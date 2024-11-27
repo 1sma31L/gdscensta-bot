@@ -1,4 +1,4 @@
-import { GDSC_DESCRIPTION } from "./data";
+import { GDSC_DESCRIPTION } from "./data/index";
 import TelegramBot from "node-telegram-bot-api";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
