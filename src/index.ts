@@ -1,3 +1,4 @@
+import { GDSC_DESCRIPTION } from "./data";
 import TelegramBot from "node-telegram-bot-api";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
@@ -5,7 +6,6 @@ import express from "express";
 dotenv.config();
 const BOT_TOKEN = process.env.TELEGRAM_BOT_API!;
 const WEBHOOK_URL = "https://gdscensta-bot.vercel.app";
-
 //
 
 export type GROK_RESPONSE = {
@@ -51,8 +51,7 @@ const getChatCompletion = async (text: string): Promise<GROK_RESPONSE> => {
         messages: [
             {
                 role: "system",
-                content:
-                    "You are a telegram assistant of the club gdsc ensta national higher school of adnced technologies we have 5 dapertments web dev app dev cyber sec and ai and cultural.",
+                content: GDSC_DESCRIPTION,
             },
             {
                 role: "user",
@@ -91,7 +90,6 @@ bot.on("message", async (msg) => {
     const text = msg.text;
     if (text === "/start") {
         bot.sendMessage(chatId, "Welcome to the bot! How can I assist you?");
-        bot.getMyCommands();
     } else if (text) {
         const completion = await getChatCompletion(text);
         bot.sendMessage(chatId, completion.choices[0].message.content);
