@@ -11,106 +11,94 @@ app.use(bodyParser.json());
 
 const bot = new TelegramBot(BOT_TOKEN);
 
+// Set webhook for the bot
 bot.setWebHook(WEBHOOK_URL);
 
-// Main Departments
-
-bot.onText(/\/start/, (msg) => {
+bot.on("message", (msg) => {
 	const chatId = msg.chat.id;
+	const text = msg.text;
 
-	bot.sendMessage(chatId, "Welcome to our club! Choose a department:", {
-		reply_markup: {
-			inline_keyboard: [
-				[{ text: "HR Department", callback_data: "hr" }],
-				[{ text: "Communication (COM)", callback_data: "com" }],
-				[{ text: "IT Department", callback_data: "it" }],
-			],
-		},
-	});
-});
-
-bot.on("callback_query", (query) => {
-	const chatId = query.id;
-	const department = query.data;
-
-	if (department === "hr") {
-		bot.sendMessage(chatId, "HR Department:\nChoose a sub-department:", {
-			reply_markup: {
-				inline_keyboard: [
-					[{ text: "Recruitment", callback_data: "hr_recruitment" }],
-					[{ text: "Training", callback_data: "hr_training" }],
-				],
-			},
-		});
-	} else if (department === "com") {
-		bot.sendMessage(
-			chatId,
-			"Communication Department:\nChoose a sub-department:",
-			{
-				reply_markup: {
-					inline_keyboard: [
-						[{ text: "Social Media", callback_data: "com_social" }],
-						[{ text: "Event Planning", callback_data: "com_events" }],
-					],
-				},
-			}
-		);
-	} else if (department === "it") {
-		bot.sendMessage(chatId, "IT Department:\nChoose a sub-department:", {
-			reply_markup: {
-				inline_keyboard: [
-					[{ text: "Web Development", callback_data: "it_web" }],
-					[{ text: "Tech Support", callback_data: "it_support" }],
-				],
-			},
-		});
-	}
-});
-
-bot.on("callback_query", (query) => {
-	const chatId = query.id;
-	const subDepartment = query.data as keyof typeof departmentLinks;
-
-	const departmentLinks = {
-		hr_recruitment: "https://t.me/hr_recruitment",
-		hr_training: "https://t.me/hr_training",
-		com_social: "https://t.me/com_social",
-		com_events: "https://t.me/com_events",
-		it_web: "https://t.me/it_web",
-		it_support: "https://t.me/it_support",
+	const DEP_LINKS = {
+		"Web Development": "https://t.me/webdev_group",
+		"App Development": "https://t.me/appdev_group",
+		"Artificial Intelligence": "https://t.me/ai_group",
+		"Cyber Security": "https://t.me/cybersec_group",
+		"UI/UX Design": "https://t.me/uiux_group",
+		"Human Resources": "https://t.me/hr_group",
+		"External Relations": "https://t.me/er_group",
+		Design: "https://t.me/design_group",
+		IT: "https://t.me/it_group",
 	};
 
-	if (departmentLinks[subDepartment]) {
-		bot.sendMessage(
-			chatId,
-			`Here is the link to the ${subDepartment.replace("_", " ")} group:\n${
-				departmentLinks[subDepartment]
-			}`
-		);
+	// Check for the `/start` command
+	if (text === "/start") {
+		bot.sendMessage(chatId, "Welcome to our club! Choose a department:", {
+			reply_markup: {
+				keyboard: [
+					[{ text: "Web Development" }],
+					[{ text: "App Development" }],
+					[{ text: "Artificial Intelligence" }],
+					[{ text: "Cyber Security" }],
+					[{ text: "UI/UX Design" }],
+				],
+				resize_keyboard: true,
+				one_time_keyboard: true,
+			},
+		});
+		return;
+	}
+
+	switch (text) {
+		case "Web Development":
+		case "App Development":
+		case "Artificial Intelligence":
+		case "Cyber Security":
+		case "UI/UX Design":
+			bot.sendMessage(
+				chatId,
+				`You chose ${text}. Here's the link to the Recruitment team Telegram group: ${DEP_LINKS[text]}`,
+				{}
+			);
+			bot.sendMessage(chatId, "Choose a Sub-Department", {
+				reply_markup: {
+					keyboard: [
+						[{ text: "Frontend" }],
+						[{ text: "Backend" }],
+						[{ text: "Mobile" }],
+						[{ text: "Desktop" }],
+						[{ text: "Machine Learning" }],
+						[{ text: "Ethical Hacking" }],
+						[{ text: "UI" }],
+						[{ text: "UX" }],
+					],
+					resize_keyboard: true,
+					one_time_keyboard: true,
+				},
+			});
+			bot.on("message", (msg) => {
+				const text = msg.text;
+				switch (text) {
+					case "Human Resources":
+					case "External Relations":
+					case "Design":
+					case "IT":
+						bot.sendMessage(
+							chatId,
+							`You chose ${text}. Here's the link to the ${text} Telegram group: ${DEP_LINKS[text]}`
+						);
+						break;
+					default:
+						bot.sendMessage(
+							chatId,
+							"Please choose a valid option from the menu."
+						);
+				}
+			});
+			break;
+		default:
+			bot.sendMessage(chatId, "Please choose a valid option from the menu.");
 	}
 });
-
-// bot.sendMessage(chatId, "Would you like to choose another department?", {
-// 	reply_markup: {
-// 		inline_keyboard: [
-// 			[{ text: "Yes, go back to main menu", callback_data: "main_menu" }],
-// 		],
-// 	},
-// });
-
-// bot.on("callback_query", (query) => {
-// 	if (query.data === "main_menu") {
-// 		bot.sendMessage(query.id, "Choose a department:", {
-// 			reply_markup: {
-// 				inline_keyboard: [
-// 					[{ text: "HR Department", callback_data: "hr" }],
-// 					[{ text: "Communication (COM)", callback_data: "com" }],
-// 					[{ text: "IT Department", callback_data: "it" }],
-// 				],
-// 			},
-// 		});
-// 	}
-// });
 
 /* EXPRESS APP */
 app.post("/", (req, res) => {
