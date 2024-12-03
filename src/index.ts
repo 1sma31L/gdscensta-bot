@@ -3,7 +3,7 @@ import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import express from "express";
 dotenv.config();
-const BOT_TOKEN = process.env.TELEGRAM_BOT_API!;
+const BOT_TOKEN = process.env.TELEGRAM_BOT_API || "";
 const WEBHOOK_URL = "https://gdscensta-bot.vercel.app";
 
 const app = express();
@@ -13,15 +13,18 @@ const bot = new TelegramBot(BOT_TOKEN);
 
 bot.setWebHook(WEBHOOK_URL);
 
+// Main Departments
+
 bot.on("message", (msg) => {
 	const chatId = msg.chat.id;
 	if (msg.text === "/start") {
 		bot.sendMessage(chatId, "Welcome to our club! Choose a department:", {
 			reply_markup: {
 				inline_keyboard: [
-					[{ text: "HR Department", callback_data: "hr" }],
+					[{ text: "RH - Ressources Humaine", callback_data: "hr" }],
 					[{ text: "Communication (COM)", callback_data: "com" }],
-					[{ text: "IT Department", callback_data: "it" }],
+					[{ text: "IT", callback_data: "it" }],
+					[{ text: "RE - Relations Exterieur", callback_data: "re" }],
 				],
 			},
 		});
@@ -31,7 +34,6 @@ bot.on("message", (msg) => {
 bot.on("callback_query", (query) => {
 	const chatId = query.id;
 	const department = query.data;
-
 	if (department === "hr") {
 		bot.sendMessage(chatId, "HR Department:\nChoose a sub-department:", {
 			reply_markup: {
@@ -63,6 +65,15 @@ bot.on("callback_query", (query) => {
 				],
 			},
 		});
+	} else if (department === "re") {
+		bot.sendMessage(chatId, "RE Department:\nChoose a sub-department:", {
+			reply_markup: {
+				inline_keyboard: [
+					[{ text: "Partnership", callback_data: "re_partnership" }],
+					[{ text: "Events", callback_data: "re_events" }],
+				],
+			},
+		});
 	}
 });
 
@@ -77,15 +88,14 @@ bot.on("callback_query", (query) => {
 		com_events: "https://t.me/com_events",
 		it_web: "https://t.me/it_web",
 		it_support: "https://t.me/it_support",
+		re_partnership: "https://t.me/re_partnership",
+		re_events: "https://t.me/re_events",
 	};
-
-	if (subDepartment) {
-		if (departmentLinks[subDepartment]) {
-			bot.sendMessage(
-				chatId,
-				`Here is the link to the ${subDepartment.replace("_", " ")} group:\n${departmentLinks[subDepartment]}`
-			);
-		}
+	if (departmentLinks[subDepartment]) {
+		bot.sendMessage(
+			chatId,
+			`Here is the link to the ${subDepartment.replace("_", " ")} group:\n${departmentLinks[subDepartment]}`
+		);
 	}
 });
 
@@ -97,19 +107,19 @@ bot.on("callback_query", (query) => {
 // 	},
 // });
 
-bot.on("callback_query", (query) => {
-	if (query.data === "main_menu") {
-		bot.sendMessage(query.id, "Choose a department:", {
-			reply_markup: {
-				inline_keyboard: [
-					[{ text: "HR Department", callback_data: "hr" }],
-					[{ text: "Communication (COM)", callback_data: "com" }],
-					[{ text: "IT Department", callback_data: "it" }],
-				],
-			},
-		});
-	}
-});
+// bot.on("callback_query", (query) => {
+// 	if (query.data === "main_menu") {
+// 		bot.sendMessage(query.id, "Choose a department:", {
+// 			reply_markup: {
+// 				inline_keyboard: [
+// 					[{ text: "HR Department", callback_data: "hr" }],
+// 					[{ text: "Communication (COM)", callback_data: "com" }],
+// 					[{ text: "IT Department", callback_data: "it" }],
+// 				],
+// 			},
+// 		});
+// 	}
+// });
 
 /* EXPRESS APP */
 app.post("/", (req, res) => {
