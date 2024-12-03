@@ -13,6 +13,21 @@ const bot = new TelegramBot(BOT_TOKEN);
 
 bot.setWebHook(WEBHOOK_URL);
 
+bot.on("message", (msg) => {
+	const chatId = msg.chat.id;
+	if (msg.text === "/start") {
+		bot.sendMessage(chatId, "Welcome to our club! Choose a department:", {
+			reply_markup: {
+				inline_keyboard: [
+					[{ text: "HR Department", callback_data: "hr" }],
+					[{ text: "Communication (COM)", callback_data: "com" }],
+					[{ text: "IT Department", callback_data: "it" }],
+				],
+			},
+		});
+	}
+});
+
 bot.on("callback_query", (query) => {
 	const chatId = query.id;
 	const department = query.data;
