@@ -128,6 +128,11 @@ bot.on("message", (msg) => {
 				`You chose ${text}. Here's the link to the ${text} Telegram group: ${DEP_LINKS[text]}`
 			);
 			delete userState[chatId]; // Reset user state after handling sub-department
+			bot.sendMessage(chatId, "Thank you for your selection.", {
+				reply_markup: {
+					remove_keyboard: true,
+				},
+			});
 		} else {
 			bot.sendMessage(chatId, "Please choose a valid sub-department.");
 		}
