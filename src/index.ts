@@ -85,9 +85,14 @@ bot.on("message", (msg) => {
 		case "Artificial Intelligence":
 		case "Cyber Security":
 		case "UI/UX Design":
+		case "Human Resources":
+		case "External Relations":
+		case "Design":
+		case "IT":
+		case "Projects":
 			bot.sendMessage(
 				chatId,
-				`You chose ${text}. Here's the link to the Recruitment team Telegram group: ${DEP_LINKS[text]}`
+				`You chose ${text}. Here's the link to the ${text} Telegram group: ${DEP_LINKS[text]}`
 			);
 			bot.sendMessage(chatId, "Choose a Sub-Department", {
 				reply_markup: {
@@ -101,21 +106,6 @@ bot.on("message", (msg) => {
 					resize_keyboard: true,
 					one_time_keyboard: true,
 				},
-			});
-			bot.on("message", (msg) => {
-				const text = msg.text;
-				switch (text) {
-					case "Human Resources":
-					case "External Relations":
-					case "Design":
-					case "IT":
-					case "Projects":
-						bot.sendMessage(
-							chatId,
-							`You chose ${text}. Here's the link to the ${text} Telegram group: ${DEP_LINKS[text]}`
-						);
-						break;
-				}
 			});
 			break;
 	}
