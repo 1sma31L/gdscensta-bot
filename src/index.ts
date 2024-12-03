@@ -11,15 +11,13 @@ app.use(bodyParser.json());
 
 const bot = new TelegramBot(BOT_TOKEN);
 
-// Set webhook for the bot
 bot.setWebHook(WEBHOOK_URL);
+
+// Main Departments
 
 bot.on("message", (msg) => {
 	const chatId = msg.chat.id;
-	const text = msg.text;
-
-	// Check for the `/start` command
-	if (text === "/start") {
+	if (msg.text === "/start") {
 		bot.sendMessage(chatId, "Welcome to our club! Choose a department:", {
 			reply_markup: {
 				keyboard: [
@@ -28,75 +26,82 @@ bot.on("message", (msg) => {
 					[{ text: "IT" }],
 					[{ text: "RE - Relations Exterieur" }],
 				],
-				resize_keyboard: true,
-				one_time_keyboard: true,
+				resize_keyboard: true, // Optional: Make the keyboard smaller
+				one_time_keyboard: true, // Optional: Hide the keyboard after a button is clicked
 			},
 		});
-		return; // Exit to prevent further processing of `/start`
 	}
+});
 
-	// Check for "RH - Ressources Humaine" selection
-	if (text === "RH - Ressources Humaine") {
+bot.on("callback_query", (query) => {
+	const chatId = query.id;
+	const department = query.data;
+	if (department === "hr") {
 		bot.sendMessage(chatId, "HR Department:\nChoose a sub-department:", {
 			reply_markup: {
-				keyboard: [[{ text: "Recruitment" }], [{ text: "Training" }]],
-				resize_keyboard: true,
-				one_time_keyboard: true,
-				remove_keyboard: true,
+				inline_keyboard: [
+					[{ text: "Recruitment", callback_data: "hr_recruitment" }],
+					[{ text: "Training", callback_data: "hr_training" }],
+				],
 			},
 		});
-		return;
-	}
-
-	// Handle sub-department selections
-	if (text === "Recruitment") {
+	} else if (department === "com") {
 		bot.sendMessage(
 			chatId,
-			"You chose Recruitment. Here's the link to the Recruitment team Telegram group: https://t.me/recruitment_group",
+			"Communication Department:\nChoose a sub-department:",
 			{
 				reply_markup: {
-					remove_keyboard: true,
+					inline_keyboard: [
+						[{ text: "Social Media", callback_data: "com_social" }],
+						[{ text: "Event Planning", callback_data: "com_events" }],
+					],
 				},
 			}
 		);
-		return;
+	} else if (department === "it") {
+		bot.sendMessage(chatId, "IT Department:\nChoose a sub-department:", {
+			reply_markup: {
+				inline_keyboard: [
+					[{ text: "Web Development", callback_data: "it_web" }],
+					[{ text: "Tech Support", callback_data: "it_support" }],
+				],
+			},
+		});
+	} else if (department === "re") {
+		bot.sendMessage(chatId, "RE Department:\nChoose a sub-department:", {
+			reply_markup: {
+				inline_keyboard: [
+					[{ text: "Partnership", callback_data: "re_partnership" }],
+					[{ text: "Events", callback_data: "re_events" }],
+				],
+			},
+		});
 	}
-
-	if (text === "Training") {
-		bot.sendMessage(
-			chatId,
-			"You chose Training. Here's the link to the Training team Telegram group: https://t.me/training_group"
-		);
-		return;
-	}
-
-	// Handle other cases
-	bot.sendMessage(chatId, "Please choose a valid option from the menu.");
 });
 
-// bot.on("callback_query", (query) => {
-// 	const chatId = query.id;
-// 	const subDepartment = query.data as keyof typeof departmentLinks;
+bot.on("callback_query", (query) => {
+	const chatId = query.id;
+	const subDepartment = query.data as keyof typeof departmentLinks;
 
-// 	const departmentLinks = {
-// 		hr_recruitment: "https://t.me/hr_recruitment",
-// 		hr_training: "https://t.me/hr_training",
-// 		com_social: "https://t.me/com_social",
-// 		com_events: "https://t.me/com_events",
-// 		it_web: "https://t.me/it_web",
-// 		it_support: "https://t.me/it_support",
-// 		re_partnership: "https://t.me/re_partnership",
-// 		re_events: "https://t.me/re_events",
-// 	};
-// 	if (departmentLinks[subDepartment]) {
-// 		bot.sendMessage(
-// 			chatId,
-// 			`Here is the link to the ${subDepartment.replace("_", " ")} group:\n${
-// 				departmentLinks[subDepartment]
-// 			}`
-// 		);
-// 	}
-// });
+	const departmentLinks = {
+		hr_recruitment: "https://t.me/hr_recruitment",
+		hr_training: "https://t.me/hr_training",
+		com_social: "https://t.me/com_social",
+		com_events: "https://t.me/com_events",
+		it_web: "https://t.me/it_web",
+		it_support: "https://t.me/it_support",
+		re_partnership: "https://t.me/re_partnership",
+		re_events: "https://t.me/re_events",
+	};
+	if (departmentLinks[subDepartment]) {
+		bot.sendMessage(
+			chatId,
+			`Here is the link to the ${subDepartment.replace("_", " ")} group:\n${
+				departmentLinks[subDepartment]
+			}`
+		);
+	}
+});
 
 // bot.sendMessage(chatId, "Would you like to choose another department?", {
 // 	reply_markup: {
