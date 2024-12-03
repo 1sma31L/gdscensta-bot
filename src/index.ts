@@ -42,6 +42,7 @@ bot.on("message", (msg) => {
 				keyboard: [[{ text: "Recruitment" }], [{ text: "Training" }]],
 				resize_keyboard: true,
 				one_time_keyboard: true,
+				remove_keyboard: true,
 			},
 		});
 		return;
@@ -51,7 +52,12 @@ bot.on("message", (msg) => {
 	if (text === "Recruitment") {
 		bot.sendMessage(
 			chatId,
-			"You chose Recruitment. Here's the link to the Recruitment team Telegram group: https://t.me/recruitment_group"
+			"You chose Recruitment. Here's the link to the Recruitment team Telegram group: https://t.me/recruitment_group",
+			{
+				reply_markup: {
+					remove_keyboard: true,
+				},
+			}
 		);
 		return;
 	}
