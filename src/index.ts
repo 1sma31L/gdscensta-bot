@@ -31,6 +31,7 @@ bot.on("message", (msg) => {
 		Projects: "https://t.me/+SHCfGII7Y3AzMjY0",
 		Design: "https://t.me/design_group",
 		IT: "https://t.me/it_group",
+		MAIN: "https://t.me/gdscensta",
 	};
 
 	// Commands
@@ -113,11 +114,15 @@ bot.on("message", (msg) => {
 				`You chose ${text}. Here's the link to the ${text} Telegram group: ${DEP_LINKS[text]}`
 			);
 			delete userState[chatId];
-			bot.sendMessage(chatId, "Thank you for your selection.", {
-				reply_markup: {
-					remove_keyboard: true,
-				},
-			});
+			bot.sendMessage(
+				chatId,
+				`Thank you for your selection. Dont forget to join our main club's Telegram group :${DEP_LINKS.MAIN} `,
+				{
+					reply_markup: {
+						remove_keyboard: true,
+					},
+				}
+			);
 		} else {
 			bot.sendMessage(chatId, "Please choose a valid sub-department.");
 		}
