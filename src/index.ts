@@ -95,7 +95,7 @@ bot.on("message", (msg) => {
 					keyboard: [
 						[{ text: "Human Resources" }],
 						[{ text: "External Relations" }],
-						[{ text: "Design" }],
+						[{ text: "Communications" }],
 						[{ text: "IT" }],
 						[{ text: "Projects" }],
 					],
