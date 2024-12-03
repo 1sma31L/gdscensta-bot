@@ -73,25 +73,25 @@ bot.on("message", (msg) => {
 		return;
 	}
 
-	if (text === "/sub_departments") {
-		bot.sendMessage(
-			chatId,
-			"Links to all of our sub-departments:\n\n" +
-				Object.entries(DEP_LINKS)
-					.filter(([key]) =>
-						[
-							"Human Resources",
-							"External Relations",
-							"Design",
-							"IT",
-							"Projects",
-						].includes(key)
-					)
-					.map(([key, link]) => `${key}: ${link}`)
-					.join("\n")
-		);
-		return;
-	}
+	// if (text === "/sub_departments") {
+	// 	bot.sendMessage(
+	// 		chatId,
+	// 		"Links to all of our sub-departments:\n\n" +
+	// 			Object.entries(DEP_LINKS)
+	// 				.filter(([key]) =>
+	// 					[
+	// 						"Human Resources",
+	// 						"External Relations",
+	// 						"Design",
+	// 						"IT",
+	// 						"Projects",
+	// 					].includes(key)
+	// 				)
+	// 				.map(([key, link]) => `${key}: ${link}`)
+	// 				.join("\n")
+	// 	);
+	// 	return;
+	// }
 
 	// Main Menu Choices
 	if (userState[chatId] === "main_menu") {
