@@ -36,19 +36,23 @@ bot.on("message", (msg) => {
 
 	// Commands
 	if (text === "/start") {
-		bot.sendMessage(chatId, "Welcome to our club! Choose a department:", {
-			reply_markup: {
-				keyboard: [
-					[{ text: "Web Development" }],
-					[{ text: "App Development" }],
-					[{ text: "Artificial Intelligence" }],
-					[{ text: "Cyber Security" }],
-					[{ text: "UI/UX Design" }],
-				],
-				resize_keyboard: true,
-				one_time_keyboard: true,
-			},
-		});
+		bot.sendMessage(
+			chatId,
+			`Welcome to our club!. Join our club's main Telegram group : ${DEP_LINKS.MAIN}, And also choose a department:`,
+			{
+				reply_markup: {
+					keyboard: [
+						[{ text: "Web Development" }],
+						[{ text: "App Development" }],
+						[{ text: "Artificial Intelligence" }],
+						[{ text: "Cyber Security" }],
+						[{ text: "UI/UX Design" }],
+					],
+					resize_keyboard: true,
+					one_time_keyboard: true,
+				},
+			}
+		);
 		userState[chatId] = "main_menu";
 		return;
 	}
@@ -114,15 +118,11 @@ bot.on("message", (msg) => {
 				`You chose ${text}. Here's the link to the ${text} Telegram group: ${DEP_LINKS[text]}`
 			);
 			delete userState[chatId];
-			bot.sendMessage(
-				chatId,
-				`Thank you for your selection. Dont forget to join our main club's Telegram group :${DEP_LINKS.MAIN} `,
-				{
-					reply_markup: {
-						remove_keyboard: true,
-					},
-				}
-			);
+			bot.sendMessage(chatId, `Thank you for your selection.`, {
+				reply_markup: {
+					remove_keyboard: true,
+				},
+			});
 		} else {
 			bot.sendMessage(chatId, "Please choose a valid sub-department.");
 		}
