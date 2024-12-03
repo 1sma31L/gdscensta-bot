@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
-        "target": "ES6",
-        "module": "ESNext",
+        "target": "ESNext", // Compile to ESNext
+        "module": "ES2020", // Use CommonJS for module resolution
         "moduleResolution": "node", // Use "node" to resolve modules
         "esModuleInterop": true, // Enable esModuleInterop
         "resolveJsonModule": true, // Allow importing JSON files

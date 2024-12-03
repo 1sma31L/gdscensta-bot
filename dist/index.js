@@ -1,12 +1,3 @@
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 import { GDSC_DESCRIPTION } from "./data";
 import TelegramBot from "node-telegram-bot-api";
 import bodyParser from "body-parser";
@@ -15,7 +6,7 @@ import express from "express";
 dotenv.config();
 const BOT_TOKEN = process.env.TELEGRAM_BOT_API;
 const WEBHOOK_URL = "https://gdscensta-bot.vercel.app";
-const getChatCompletion = (text) => __awaiter(void 0, void 0, void 0, function* () {
+const getChatCompletion = async (text) => {
     const url = "https://api.x.ai/v1/chat/completions";
     const apiKey = process.env.GROK_API_KEY;
     const payload = {
@@ -38,30 +29,30 @@ const getChatCompletion = (text) => __awaiter(void 0, void 0, void 0, function* 
         "Content-Type": "application/json",
         Authorization: `Bearer ${apiKey}`,
     };
-    const response = yield fetch(url, {
+    const response = await fetch(url, {
         method: "POST",
         headers: headers,
         body: JSON.stringify(payload),
     });
-    const data = yield response.json();
+    const data = await response.json();
     return data;
-});
+};
 //
 const app = express();
 app.use(bodyParser.json());
 const bot = new TelegramBot(BOT_TOKEN);
 bot.setWebHook(WEBHOOK_URL);
-bot.on("message", (msg) => __awaiter(void 0, void 0, void 0, function* () {
+bot.on("message", async (msg) => {
     const chatId = msg.chat.id;
     const text = msg.text;
     if (text === "/start") {
         bot.sendMessage(chatId, "Welcome to the bot! How can I assist you?");
     }
     else if (text) {
-        const completion = yield getChatCompletion(text);
+        const completion = await getChatCompletion(text);
         bot.sendMessage(chatId, completion.choices[0].message.content);
     }
-}));
+});
 app.post("/", (req, res) => {
     bot.processUpdate(req.body);
     res.sendStatus(200);
