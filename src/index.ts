@@ -15,27 +15,24 @@ bot.setWebHook(WEBHOOK_URL);
 
 // Main Departments
 
-bot.on("message", (msg) => {
+bot.onText(/\/start/, (msg) => {
 	const chatId = msg.chat.id;
-	if (msg.text === "/start") {
-		bot.sendMessage(chatId, "Welcome to our club! Choose a department:", {
-			reply_markup: {
-				keyboard: [
-					[{ text: "RH - Ressources Humaine" }],
-					[{ text: "Communication (COM)" }],
-					[{ text: "IT" }],
-					[{ text: "RE - Relations Exterieur" }],
-				],
-				resize_keyboard: true, // Optional: Make the keyboard smaller
-				one_time_keyboard: true, // Optional: Hide the keyboard after a button is clicked
-			},
-		});
-	}
+
+	bot.sendMessage(chatId, "Welcome to our club! Choose a department:", {
+		reply_markup: {
+			inline_keyboard: [
+				[{ text: "HR Department", callback_data: "hr" }],
+				[{ text: "Communication (COM)", callback_data: "com" }],
+				[{ text: "IT Department", callback_data: "it" }],
+			],
+		},
+	});
 });
 
 bot.on("callback_query", (query) => {
 	const chatId = query.id;
 	const department = query.data;
+
 	if (department === "hr") {
 		bot.sendMessage(chatId, "HR Department:\nChoose a sub-department:", {
 			reply_markup: {
@@ -67,15 +64,6 @@ bot.on("callback_query", (query) => {
 				],
 			},
 		});
-	} else if (department === "re") {
-		bot.sendMessage(chatId, "RE Department:\nChoose a sub-department:", {
-			reply_markup: {
-				inline_keyboard: [
-					[{ text: "Partnership", callback_data: "re_partnership" }],
-					[{ text: "Events", callback_data: "re_events" }],
-				],
-			},
-		});
 	}
 });
 
@@ -90,9 +78,8 @@ bot.on("callback_query", (query) => {
 		com_events: "https://t.me/com_events",
 		it_web: "https://t.me/it_web",
 		it_support: "https://t.me/it_support",
-		re_partnership: "https://t.me/re_partnership",
-		re_events: "https://t.me/re_events",
 	};
+
 	if (departmentLinks[subDepartment]) {
 		bot.sendMessage(
 			chatId,
