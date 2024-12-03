@@ -56,42 +56,27 @@ bot.on("message", (msg) => {
 		bot.sendMessage(
 			chatId,
 			"Links to all of our departments:\n\n" +
-				Object.entries(DEP_LINKS)
-					.filter(
-						([key]) =>
-							![
-								"Web Development",
-								"App Development",
-								"Artificial Intelligence",
-								"Cyber Security",
-								"UI/UX Design",
-							].includes(key)
-					)
-					.map(([key, link]) => `${key}: ${link}`)
-					.join("\n")
+				`Web Development: ${DEP_LINKS["Web Development"]}\n` +
+				`App Development: ${DEP_LINKS["App Development"]}\n` +
+				`Artificial Intelligence: ${DEP_LINKS["Artificial Intelligence"]}\n` +
+				`Cyber Security: ${DEP_LINKS["Cyber Security"]}\n` +
+				`UI/UX Design: ${DEP_LINKS["UI/UX Design"]}\n`
 		);
 		return;
 	}
 
-	// if (text === "/sub_departments") {
-	// 	bot.sendMessage(
-	// 		chatId,
-	// 		"Links to all of our sub-departments:\n\n" +
-	// 			Object.entries(DEP_LINKS)
-	// 				.filter(([key]) =>
-	// 					[
-	// 						"Human Resources",
-	// 						"External Relations",
-	// 						"Design",
-	// 						"IT",
-	// 						"Projects",
-	// 					].includes(key)
-	// 				)
-	// 				.map(([key, link]) => `${key}: ${link}`)
-	// 				.join("\n")
-	// 	);
-	// 	return;
-	// }
+	if (text === "/sub_departments") {
+		bot.sendMessage(
+			chatId,
+			"Links to all of our sub-departments:\n\n" +
+				`Human Resources: ${DEP_LINKS["Human Resources"]}\n` +
+				`External Relations: ${DEP_LINKS["External Relations"]}\n` +
+				`Design: ${DEP_LINKS["Design"]}\n` +
+				`IT: ${DEP_LINKS["IT"]}\n` +
+				`Projects: ${DEP_LINKS["Projects"]}\n`
+		);
+		return;
+	}
 
 	// Main Menu Choices
 	if (userState[chatId] === "main_menu") {
