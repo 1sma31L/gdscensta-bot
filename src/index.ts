@@ -14,11 +14,13 @@ const bot = new TelegramBot(BOT_TOKEN);
 // Set webhook for the bot
 bot.setWebHook(WEBHOOK_URL);
 
+const userState: { [key: number]: string } = {}; // Store user states
+
 bot.on("message", (msg) => {
 	const chatId = msg.chat.id;
 	const text = msg.text;
-
-	const DEP_LINKS = {
+	if (!text) return;
+	const DEP_LINKS: { [key: string]: string } = {
 		"Web Development": "https://t.me/webdev_group",
 		"App Development": "https://t.me/appdev_group",
 		"Artificial Intelligence": "https://t.me/ai_group",
@@ -46,45 +48,54 @@ bot.on("message", (msg) => {
 				one_time_keyboard: true,
 			},
 		});
+		userState[chatId] = "main_menu";
 		return;
 	}
+
 	if (text === "/departments") {
 		bot.sendMessage(
 			chatId,
 			"Links to all of our departments:\n\n" +
-				`Web Development: ${DEP_LINKS["Web Development"]}\n` +
-				`App Development: ${DEP_LINKS["App Development"]}\n` +
-				`Artificial Intelligence: ${DEP_LINKS["Artificial Intelligence"]}\n` +
-				`Cyber Security: ${DEP_LINKS["Cyber Security"]}\n` +
-				`UI/UX Design: ${DEP_LINKS["UI/UX Design"]}\n` +
-				`Human Resources: ${DEP_LINKS["Human Resources"]}\n` +
-				`External Relations: ${DEP_LINKS["External Relations"]}\n` +
-				`Design: ${DEP_LINKS["Design"]}\n` +
-				`IT: ${DEP_LINKS["IT"]}\n` +
-				`Projects: ${DEP_LINKS["Projects"]}`
-		);
-		return;
-	}
-	if (text === "/sub-departments") {
-		bot.sendMessage(
-			chatId,
-			"Links to all of our sub-departments:\n\n" +
-				`Human Resources: ${DEP_LINKS["Human Resources"]}\n` +
-				`External Relations: ${DEP_LINKS["External Relations"]}\n` +
-				`Design: ${DEP_LINKS["Design"]}\n` +
-				`IT: ${DEP_LINKS["IT"]}\n` +
-				`Projects: ${DEP_LINKS["Projects"]}`
+				Object.entries(DEP_LINKS)
+					.filter(
+						([key]) =>
+							![
+								"Web Development",
+								"App Development",
+								"Artificial Intelligence",
+								"Cyber Security",
+								"UI/UX Design",
+							].includes(key)
+					)
+					.map(([key, link]) => `${key}: ${link}`)
+					.join("\n")
 		);
 		return;
 	}
 
-	// Department
-	switch (text) {
-		case "Web Development":
-		case "App Development":
-		case "Artificial Intelligence":
-		case "Cyber Security":
-		case "UI/UX Design":
+	if (text === "/sub_departments") {
+		bot.sendMessage(
+			chatId,
+			"Links to all of our sub-departments:\n\n" +
+				Object.entries(DEP_LINKS)
+					.filter(([key]) =>
+						[
+							"Human Resources",
+							"External Relations",
+							"Design",
+							"IT",
+							"Projects",
+						].includes(key)
+					)
+					.map(([key, link]) => `${key}: ${link}`)
+					.join("\n")
+		);
+		return;
+	}
+
+	// Main Menu Choices
+	if (userState[chatId] === "main_menu") {
+		if (DEP_LINKS[text]) {
 			bot.sendMessage(
 				chatId,
 				`You chose ${text}. Here's the link to the ${text} Telegram group: ${DEP_LINKS[text]}`
@@ -102,23 +113,32 @@ bot.on("message", (msg) => {
 					one_time_keyboard: true,
 				},
 			});
-			bot.on("message", (msg) => {
-				const text = msg.text;
-				switch (text) {
-					case "Human Resources":
-					case "External Relations":
-					case "Design":
-					case "IT":
-					case "Projects":
-						bot.sendMessage(
-							chatId,
-							`You chose ${text}. Here's the link to the ${text} Telegram group: ${DEP_LINKS[text]}`
-						);
-						break;
-				}
-			});
-			break;
+			userState[chatId] = "sub_department";
+		} else {
+			bot.sendMessage(chatId, "Please choose a valid department.");
+		}
+		return;
 	}
+
+	// Sub-Department Choices
+	if (userState[chatId] === "sub_department") {
+		if (DEP_LINKS[text]) {
+			bot.sendMessage(
+				chatId,
+				`You chose ${text}. Here's the link to the ${text} Telegram group: ${DEP_LINKS[text]}`
+			);
+			delete userState[chatId]; // Reset user state after handling sub-department
+		} else {
+			bot.sendMessage(chatId, "Please choose a valid sub-department.");
+		}
+		return;
+	}
+
+	// Default fallback
+	bot.sendMessage(
+		chatId,
+		"I didn't understand that. Please use /start to begin."
+	);
 });
 
 /* EXPRESS APP */
