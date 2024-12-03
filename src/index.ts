@@ -20,27 +20,26 @@ bot.on("message", (msg) => {
 	if (msg.text === "/start") {
 		bot.sendMessage(chatId, "Welcome to our club! Choose a department:", {
 			reply_markup: {
-				inline_keyboard: [
-					[{ text: "RH - Ressources Humaine", callback_data: "hr" }],
-					[{ text: "Communication (COM)", callback_data: "com" }],
-					[{ text: "IT", callback_data: "it" }],
-					[{ text: "RE - Relations Exterieur", callback_data: "re" }],
+				keyboard: [
+					[{ text: "RH - Ressources Humaine" }],
+					[{ text: "Communication (COM)" }],
+					[{ text: "IT" }],
+					[{ text: "RE - Relations Exterieur" }],
 				],
+				resize_keyboard: true, // Optional: Make the keyboard smaller
+				one_time_keyboard: true, // Optional: Hide the keyboard after a button is clicked
 			},
 		});
 	}
 });
 
-bot.on("callback_query", (query) => {
-	const chatId = query.id;
-	const department = query.data;
-	if (department === "hr") {
+bot.on("message", (msg) => {
+	const chatId = msg.chat.id;
+	const department = msg.text;
+	if (department === "RH - Ressources Humaine") {
 		bot.sendMessage(chatId, "HR Department:\nChoose a sub-department:", {
 			reply_markup: {
-				inline_keyboard: [
-					[{ text: "Recruitment", callback_data: "hr_recruitment" }],
-					[{ text: "Training", callback_data: "hr_training" }],
-				],
+				inline_keyboard: [[{ text: "Recruitment" }], [{ text: "Training" }]],
 			},
 		});
 	} else if (department === "com") {
@@ -50,8 +49,8 @@ bot.on("callback_query", (query) => {
 			{
 				reply_markup: {
 					inline_keyboard: [
-						[{ text: "Social Media", callback_data: "com_social" }],
-						[{ text: "Event Planning", callback_data: "com_events" }],
+						[{ text: "Social Media" }],
+						[{ text: "Event Planning" }],
 					],
 				},
 			}
@@ -60,18 +59,15 @@ bot.on("callback_query", (query) => {
 		bot.sendMessage(chatId, "IT Department:\nChoose a sub-department:", {
 			reply_markup: {
 				inline_keyboard: [
-					[{ text: "Web Development", callback_data: "it_web" }],
-					[{ text: "Tech Support", callback_data: "it_support" }],
+					[{ text: "Web Development" }],
+					[{ text: "Tech Support" }],
 				],
 			},
 		});
 	} else if (department === "re") {
 		bot.sendMessage(chatId, "RE Department:\nChoose a sub-department:", {
 			reply_markup: {
-				inline_keyboard: [
-					[{ text: "Partnership", callback_data: "re_partnership" }],
-					[{ text: "Events", callback_data: "re_events" }],
-				],
+				inline_keyboard: [[{ text: "Partnership" }], [{ text: "Events" }]],
 			},
 		});
 	}
@@ -94,7 +90,9 @@ bot.on("callback_query", (query) => {
 	if (departmentLinks[subDepartment]) {
 		bot.sendMessage(
 			chatId,
-			`Here is the link to the ${subDepartment.replace("_", " ")} group:\n${departmentLinks[subDepartment]}`
+			`Here is the link to the ${subDepartment.replace("_", " ")} group:\n${
+				departmentLinks[subDepartment]
+			}`
 		);
 	}
 });
