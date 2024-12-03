@@ -62,14 +62,10 @@ bot.on("message", (msg) => {
 			bot.sendMessage(chatId, "Choose a Sub-Department", {
 				reply_markup: {
 					keyboard: [
-						[{ text: "Frontend" }],
-						[{ text: "Backend" }],
-						[{ text: "Mobile" }],
-						[{ text: "Desktop" }],
-						[{ text: "Machine Learning" }],
-						[{ text: "Ethical Hacking" }],
-						[{ text: "UI" }],
-						[{ text: "UX" }],
+						[{ text: "Human Resources" }],
+						[{ text: "External Relations" }],
+						[{ text: "Design" }],
+						[{ text: "IT" }],
 					],
 					resize_keyboard: true,
 					one_time_keyboard: true,
