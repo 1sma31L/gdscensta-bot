@@ -13,12 +13,20 @@ const bot = new TelegramBot(BOT_TOKEN);
 
 bot.setWebHook(WEBHOOK_URL);
 
-bot.on("message", async (msg) => {
-	const chatId = msg.chat.id;
-	const text = msg.text;
-	if (text === "/start") {
-		bot.sendMessage(chatId, "Welcome to the bot! How can I assist you?");
-	} else if (text === "/departments") {
+bot.on("callback_query", (query) => {
+	const chatId = query.id;
+	const department = query.data;
+
+	if (department === "hr") {
+		bot.sendMessage(chatId, "HR Department:\nChoose a sub-department:", {
+			reply_markup: {
+				inline_keyboard: [
+					[{ text: "Recruitment", callback_data: "hr_recruitment" }],
+					[{ text: "Training", callback_data: "hr_training" }],
+				],
+			},
+		});
+	} else if (department === "com") {
 		bot.sendMessage(
 			chatId,
 			"Communication Department:\nChoose a sub-department:",
@@ -31,9 +39,64 @@ bot.on("message", async (msg) => {
 				},
 			}
 		);
+	} else if (department === "it") {
+		bot.sendMessage(chatId, "IT Department:\nChoose a sub-department:", {
+			reply_markup: {
+				inline_keyboard: [
+					[{ text: "Web Development", callback_data: "it_web" }],
+					[{ text: "Tech Support", callback_data: "it_support" }],
+				],
+			},
+		});
 	}
 });
 
+bot.on("callback_query", (query) => {
+	const chatId = query.id;
+	const subDepartment = query.data as keyof typeof departmentLinks;
+
+	const departmentLinks = {
+		hr_recruitment: "https://t.me/hr_recruitment",
+		hr_training: "https://t.me/hr_training",
+		com_social: "https://t.me/com_social",
+		com_events: "https://t.me/com_events",
+		it_web: "https://t.me/it_web",
+		it_support: "https://t.me/it_support",
+	};
+
+	if (subDepartment) {
+		if (departmentLinks[subDepartment]) {
+			bot.sendMessage(
+				chatId,
+				`Here is the link to the ${subDepartment.replace("_", " ")} group:\n${departmentLinks[subDepartment]}`
+			);
+		}
+	}
+});
+
+// bot.sendMessage(chatId, "Would you like to choose another department?", {
+// 	reply_markup: {
+// 		inline_keyboard: [
+// 			[{ text: "Yes, go back to main menu", callback_data: "main_menu" }],
+// 		],
+// 	},
+// });
+
+bot.on("callback_query", (query) => {
+	if (query.data === "main_menu") {
+		bot.sendMessage(query.id, "Choose a department:", {
+			reply_markup: {
+				inline_keyboard: [
+					[{ text: "HR Department", callback_data: "hr" }],
+					[{ text: "Communication (COM)", callback_data: "com" }],
+					[{ text: "IT Department", callback_data: "it" }],
+				],
+			},
+		});
+	}
+});
+
+/* EXPRESS APP */
 app.post("/", (req, res) => {
 	bot.processUpdate(req.body);
 	res.sendStatus(200);
