@@ -39,7 +39,9 @@ bot.on("message", (msg) => {
 	if (department === "RH - Ressources Humaine") {
 		bot.sendMessage(chatId, "HR Department:\nChoose a sub-department:", {
 			reply_markup: {
-				inline_keyboard: [[{ text: "Recruitment" }], [{ text: "Training" }]],
+				keyboard: [[{ text: "Recruitment" }], [{ text: "Training" }]],
+				resize_keyboard: true, // Optional: Make the keyboard smaller
+				one_time_keyboard: true, // Optional: Hide the keyboard after a button is clicked
 			},
 		});
 	} else if (department === "com") {
