@@ -28,6 +28,7 @@ bot.on("message", (msg) => {
 		"UI/UX Design": "https://t.me/+GrYRScDqKl4yZTM0",
 		"Human Resources": "https://t.me/+kEIV-6t-qbo2YTFk",
 		"External Relations": "https://t.me/+jeqsgIzFIJZlODQ0",
+		Cultural: "https://t.me/+4GOHIQDxlJM5MmFk",
 		Projects: "https://t.me/+SHCfGII7Y3AzMjY0",
 		Communications: "https://t.me/+z2KLzu3ZQxllZDA0",
 		IT: "https://t.me/+neKBXQqCmf44MWE8",
@@ -47,6 +48,7 @@ bot.on("message", (msg) => {
 						[{ text: "Artificial Intelligence" }],
 						[{ text: "Cyber Security" }],
 						[{ text: "UI/UX Design" }],
+						[{ text: "Cultural" }],
 					],
 					resize_keyboard: true,
 					one_time_keyboard: true,
@@ -65,7 +67,8 @@ bot.on("message", (msg) => {
 				`App Development: ${DEP_LINKS["App Development"]}\n` +
 				`Artificial Intelligence: ${DEP_LINKS["Artificial Intelligence"]}\n` +
 				`Cyber Security: ${DEP_LINKS["Cyber Security"]}\n` +
-				`UI/UX Design: ${DEP_LINKS["UI/UX Design"]}\n`
+				`UI/UX Design: ${DEP_LINKS["UI/UX Design"]}\n` +
+				`Cultural: ${DEP_LINKS["Cultural"]}\n`
 		);
 		return;
 	}
